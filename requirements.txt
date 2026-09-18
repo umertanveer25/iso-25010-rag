@@ -1,0 +1,47 @@
+﻿# ISO-25010-RAG
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+Official code repository for the paper: **ISO/IEC 25010 Knowledge-Augmented RAG Architecture for Extreme Class Imbalance in Non-Functional Requirements**
+
+This repository contains the implementation of a novel neuro-symbolic framework that couples sublinear lexical representations with dual-channel knowledge retrieval from the ISO/IEC 25010 Software Product Quality standard.
+
+## 🚀 Architecture Overview
+The dual-stream pipeline processes raw requirements through a **TF-IDF Subword N-Gram Encoder (4000D)** and a dense **ISO/IEC 25010 RAG Retriever (28D)**, merging them via a non-linear Sigmoid Gated Attention fusion layer.
+
+## 📁 Repository Structure
+- src/: Core Python source code for data loading, classification, and evaluation.
+- esults/: Output logs, numerical metrics, and cross-validation traces.
+
+## ⚙️ Installation
+`ash
+git clone https://github.com/YourUsername/ISO-25010-RAG.git
+cd ISO-25010-RAG
+pip install -r requirements.txt
+`
+
+## 📊 Usage
+To run the full 5-fold stratified cross-validation and benchmark the ISO RAG architecture against classical baselines:
+`ash
+python src/cross_validation.py
+`
+
+## 📝 Citation
+If you use this code in your research, please cite our paper:
+`ibtex
+@article{tanveer2026iso,
+  title={ISO/IEC 25010 Knowledge-Augmented RAG Architecture for Extreme Class Imbalance in Non-Functional Requirements},
+  author={Tanveer, Umer and Ali, Hashim and Hayat, Maqsood},
+  journal={TBD},
+  year={2026}
+}
+`
+"@ | Out-File -FilePath "ISO-25010-RAG\README.md" -Encoding utf8
+
+@"
+numpy>=1.21.0
+pandas>=1.3.0
+scikit-learn>=1.0.2
+matplotlib>=3.5.0
+seaborn>=0.11.2
+sentence-transformers>=2.2.0

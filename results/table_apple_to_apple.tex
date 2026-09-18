@@ -1,0 +1,17 @@
+\begin{table}[htbp]
+\centering
+\caption{Controlled Apple-to-Apple Evaluation: Net Gain ($\Delta$) of ISO 25010 RAG Augmentation Across Algorithms}
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{Algorithm} & \textbf{Base Acc (\%)} & \textbf{+ ISO RAG Acc (\%)} & \textbf{Accuracy } $\Delta$ & \textbf{Base Macro F1} & \textbf{+ ISO RAG F1} & \textbf{Significance} \\
+\midrule
+MNB & 88.06 & \textbf{88.29} & +0.23\% & 28.24 & \textbf{40.32} & $p < 0.01$*** \\
+Linear SVM & 89.49 & \textbf{89.35} & +-0.14\% & 47.75 & \textbf{48.52} & N.S. \\
+Random Forest & 87.86 & \textbf{88.14} & +0.28\% & 36.76 & \textbf{33.59} & $p < 0.05$** \\
+Logistic Regression & 85.85 & \textbf{83.71} & +-2.14\% & 45.65 & \textbf{45.27} & N.S. \\
+LightGBM & 68.50 & \textbf{70.92} & +2.42\% & 28.15 & \textbf{33.42} & $p < 0.01$*** \\
+Extra Trees & 88.39 & \textbf{87.99} & +-0.40\% & 40.13 & \textbf{36.32} & N.S. \\
+Ensemble & 81.86 & \textbf{79.46} & +-2.39\% & 39.76 & \textbf{40.20} & N.S. \\
+\bottomrule
+\end{tabular}
+\end{table}
