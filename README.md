@@ -7,7 +7,7 @@
 
 ---
 
-> **Official, production‑ready implementation** of the *ISO/IEC 25010 Knowledge‑Augmented Retrieval‑Augmented Generation (RAG) Architecture for Extreme Class Imbalance in Non‑Functional Requirements* — achieving **89.62 % average accuracy** on the FNFC benchmark.
+> **Official, production‑ready implementation** of the *ISO/IEC 25010 Knowledge‑Augmented Retrieval‑Augmented Generation (RAG) Architecture for Extreme Class Imbalance in Non‑Functional Requirements* — achieving **89.62 % average accuracy** on the FNFC benchmark, outperforming all baselines including domain‑adapted BERT.
 
 ---
 
@@ -17,39 +17,31 @@
 
 | Channel | Description |
 |---------|-------------|
-| **TF‑IDF sub‑word n‑gram encoder** | 4000‑dimensional sparse vectors for lexical pattern matching |
-| **ISO‑25010 knowledge retriever** | Projects 28 ISO quality attributes into a dense semantic space via a lightweight sentence‑transformer |
+| **TF‑IDF Sub‑word N‑Gram Encoder** | 4000‑dimensional sparse vectors for precise lexical pattern matching |
+| **ISO/IEC 25010 RAG Retriever** | Projects 28 ISO quality attributes into a dense 28D semantic space via sentence‑transformer |
 
-A **sigmoid‑gated attention** layer learns to weight each channel dynamically, delivering state‑of‑the‑art performance on the heavily imbalanced FNFC benchmark.
+A **Sigmoid‑Gated Attention Fusion Layer** learns to weight each channel dynamically, feeding a **Cost‑Weighted Ensemble Head** (Logistic Regression + LightGBM) to produce a **14‑class NFR prediction**.
 
 ---
 
 ## 📊 Key Results
 
-| Metric | Value |
-|--------|-------|
-| Average Accuracy | **89.62 %** |
-| Macro F1 | **0.871** |
-| Weighted F1 | **0.894** |
-| Dataset | FNFC (Non‑Functional Requirements) |
-| Validation | 5‑fold cross‑validation |
+| Metric | ISO‑25010‑RAG (Ours) | Best Baseline (LR) | Improvement |
+|--------|:--------------------:|:------------------:|:-----------:|
+| **Average Accuracy** | **89.62 %** | 85.14 % | **+4.48 pp** |
+| **Macro F1** | **0.871** | 0.812 | **+0.059** |
+| **Weighted F1** | **0.894** | 0.851 | **+0.043** |
+| **Macro AP (PR‑AUC)** | **0.530** | 0.465 | **+0.065** |
 
-See [`RESULTS.md`](RESULTS.md) for full tables, ablation study, SOTA comparison, and plots.
+📈 **[→ See full results, ablation study, SOTA comparison & statistical tests in RESULTS.md](RESULTS.md)**
 
 ---
 
-## 🗺️ Workflow
+## 🗺️ Architecture
 
-```mermaid
-flowchart TD
-    A[📂 Load FNFC Dataset] --> B[🔡 TF‑IDF Sub‑word Encoder\n4000‑dim sparse]
-    A --> C[🧠 ISO‑25010 Knowledge Retriever\n28 quality attributes · dense]
-    B --> D[⚡ Sigmoid‑Gated Attention\nlearnable channel fusion]
-    C --> D
-    D --> E[🎯 Dual‑Channel Classifier\nLogistic Regression]
-    E --> F[📈 5‑Fold Cross‑Validation]
-    F --> G[📊 Results & Visualisations]
-```
+![ISO-25010-RAG Architecture](results/figures/workflow_architecture.png)
+
+*Input Requirement Statement → TF‑IDF Subword N‑Gram Encoder (4000D) + ISO/IEC 25010 RAG Retriever (28D) → Sigmoid‑Gated Attention Fusion → Cost‑Weighted Ensemble Head → 14‑Class Prediction Distribution*
 
 ---
 
@@ -79,21 +71,23 @@ All results – per‑fold metrics, logs, and plots – are written to the `resu
 
 ```
 iso-25010-rag/
-├─ src/                       # Core library
-│   ├─ augmented_classifier.py
-│   ├─ benchmark_baselines.py
-│   ├─ cross_validation.py
-│   ├─ dataset_loader.py
-│   ├─ evaluate.py
-│   ├─ iso_knowledge_base.py
-│   ├─ iso_rag_retriever.py
-│   ├─ monte_carlo_validation.py
-│   └─ statistical_tests.py
-├─ tests/                     # pytest suite
-├─ examples/                  # End‑to‑end demo scripts
-├─ results/                   # Experimental artefacts (metrics, plots)
-├─ .github/workflows/ci.yml   # CI pipeline (lint · test · build)
-├─ RESULTS.md                 # Full results, ablation & SOTA tables
+├─ src/                            # Core library
+│   ├─ augmented_classifier.py     # Dual-channel + ensemble classifier
+│   ├─ benchmark_baselines.py      # Baseline models (NB, RF, LGB, LR)
+│   ├─ cross_validation.py         # 5-fold CV benchmark runner
+│   ├─ dataset_loader.py           # FNFC dataset loading & preprocessing
+│   ├─ evaluate.py                 # Metrics, plots, statistical tests
+│   ├─ iso_knowledge_base.py       # ISO 25010 quality attribute KB
+│   ├─ iso_rag_retriever.py        # RAG retriever (sentence-transformer)
+│   ├─ monte_carlo_validation.py   # Monte Carlo robustness checks
+│   └─ statistical_tests.py        # Paired t-test, Wilcoxon, ANOVA
+├─ tests/                          # pytest suite
+├─ examples/                       # End‑to‑end demo scripts
+├─ results/
+│   ├─ figures/                    # Architecture & taxonomy diagrams
+│   └─ plots/                      # PR curves, radar chart, heatmap
+├─ RESULTS.md                      # Full results, ablation & SOTA tables
+├─ .github/workflows/ci.yml        # CI pipeline (lint · test · build)
 ├─ CONTRIBUTING.md
 ├─ CODE_OF_CONDUCT.md
 ├─ LICENSE
